@@ -292,7 +292,7 @@ const HomePage = () => {
                 number: "2",
                 title: "Receive Your Phone",
                 description: "We deliver to your doorstep. Inspect thoroughly before payment.",
-                note: "Free delivery across Kenya"
+                note: "Free delivery within Nairobi."
               },
               {
                 number: "3",

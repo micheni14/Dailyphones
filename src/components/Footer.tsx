@@ -22,7 +22,7 @@ const Footer = () => {
             </div>
             <p className="text-gray-400 leading-relaxed">
               Your one-stop shop for <span className="text-white font-semibold">lipa mdogo mdogo</span> gadgets 
-              from top brands in Kenya such as Samsung, Oppo, Tecno, Vivo, Itel, HMD, Redmi, Infinix and Realme.
+              from top brands in Kenya such as Samsung and Iphone.
             </p>
             <div className="pt-4">
               <p className="text-sm text-gray-400">
@@ -40,7 +40,7 @@ const Footer = () => {
               </h3>
               <div className="flex items-center gap-3 mb-6">
                 <FaPhoneAlt className="text-white" />
-                <span className="text-white font-semibold text-lg">0728-444-442</span>
+                <span className="text-white font-semibold text-lg">0745-507-108</span>
               </div>
             </div>
 
