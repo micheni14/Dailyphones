@@ -3,56 +3,18 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaChevronDown } from "react-icons/fa";
+import { products } from "../data/products";
 
 /* =====================
-   DATA (FROM ORIGINAL)
+   EXTRACT UNIQUE FILTER OPTIONS FROM PRODUCTS DATA
 ===================== */
-const allProducts = [
-  {
-    id: "iphone-11",
-    name: "Apple iPhone 11",
-    brand: "Apple iPhone",
-    storage: "128GB",
-    depositRange: "Ksh 25k to 30k",
-    weekly: "Ksh 1,160 / Week",
-    deposit: "Ksh 8,999 deposit",
-    discount: "27% Off new",
-    image: "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?w=500",
-  },
-  {
-    id: "iphone-11-pro",
-    name: "Apple iPhone 11 Pro",
-    brand: "Apple iPhone",
-    storage: "256GB",
-    depositRange: "Ksh 30k to 40k",
-    weekly: "Ksh 1,540 / Week",
-    deposit: "Ksh 10,799 deposit",
-    discount: "32% Off new",
-    image: "https://images.unsplash.com/photo-1574755393849-623942496936?w=500",
-  },
-  {
-    id: "galaxy-s23-fe",
-    name: "Samsung Galaxy S23 FE",
-    brand: "Samsung",
-    storage: "128GB",
-    depositRange: "Ksh 20k to 25k",
-    weekly: "Ksh 1,420 / Week",
-    deposit: "Ksh 9,500 deposit",
-    discount: "20% Off new",
-    image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500",
-  },
-];
-
-/* =====================
-   FILTER OPTIONS
-===================== */
-const brands = ["Apple iPhone", "Samsung"];
-const storageOptions = ["128GB", "256GB"];
-const depositRanges = [
-  "Ksh 20k to 25k",
-  "Ksh 25k to 30k",
-  "Ksh 30k to 40k",
-];
+const brands = [...new Set(products.map(p => p.brand))];
+const storageOptions = [...new Set(products.flatMap(p => p.storage))];
+const depositRanges = [...new Set(
+  products.flatMap(p => 
+    Object.values(p.pricing).map(price => price.depositRange)
+  )
+)];
 
 /* =====================
    ACCORDION
@@ -99,23 +61,28 @@ const ProductsPage = () => {
      FILTER LOGIC
   ===================== */
   const filteredProducts = useMemo(() => {
-    let filtered = [...allProducts];
+    let filtered = [...products];
 
+    // Filter by brand
     if (selectedBrands.length) {
       filtered = filtered.filter((p) =>
         selectedBrands.includes(p.brand)
       );
     }
 
+    // Filter by storage (check if product has any of the selected storage options)
     if (selectedStorage.length) {
       filtered = filtered.filter((p) =>
-        selectedStorage.includes(p.storage)
+        p.storage.some(s => selectedStorage.includes(s))
       );
     }
 
+    // Filter by deposit range (check if any pricing tier matches)
     if (selectedDeposit.length) {
       filtered = filtered.filter((p) =>
-        selectedDeposit.includes(p.depositRange)
+        Object.values(p.pricing).some(price => 
+          selectedDeposit.includes(price.depositRange)
+        )
       );
     }
 
@@ -129,19 +96,24 @@ const ProductsPage = () => {
     const list = [...filteredProducts];
 
     if (sortBy === "price-low") {
-      list.sort(
-        (a, b) =>
-          parseInt(a.weekly.replace(/\D/g, "")) -
-          parseInt(b.weekly.replace(/\D/g, ""))
-      );
+      list.sort((a, b) => {
+        const aPrice = Object.values(a.pricing)[0].weekly;
+        const bPrice = Object.values(b.pricing)[0].weekly;
+        return aPrice - bPrice;
+      });
     }
 
     if (sortBy === "price-high") {
-      list.sort(
-        (a, b) =>
-          parseInt(b.weekly.replace(/\D/g, "")) -
-          parseInt(a.weekly.replace(/\D/g, ""))
-      );
+      list.sort((a, b) => {
+        const aPrice = Object.values(a.pricing)[0].weekly;
+        const bPrice = Object.values(b.pricing)[0].weekly;
+        return bPrice - aPrice;
+      });
+    }
+
+    // Default is "latest" - sort by year descending
+    if (sortBy === "latest") {
+      list.sort((a, b) => b.year - a.year);
     }
 
     return list;
@@ -167,7 +139,7 @@ const ProductsPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-10 flex gap-8">
         {/* FILTERS */}
-        <aside className="hidden lg:block w-1/4  p-6">
+        <aside className="hidden lg:block w-1/4 p-6">
           <h2 className="text-2xl font-bold mb-4">Filters</h2>
 
           <FilterSection title="Brand">
@@ -216,9 +188,12 @@ const ProductsPage = () => {
         {/* PRODUCTS */}
         <main className="flex-1">
           {/* SORT */}
-          <div className="flex justify-end mb-6">
+          <div className="flex justify-between items-center mb-6">
+            <p className="text-gray-600">
+              Showing {sortedProducts.length} of {products.length} products
+            </p>
             <select
-              className=" px-4 py-2"
+              className="px-4 py-2 border rounded-lg"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
@@ -229,42 +204,72 @@ const ProductsPage = () => {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedProducts.map((p) => (
-              <div
-                key={p.id}
-                onClick={() => navigate(`/products/${p.id}`)}
-                className="bg-white  shadow-sm hover:shadow-lg transition cursor-pointer relative"
-              >
-                <span className="absolute top-4 right-4 bg-red-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
-                  {p.discount}
-                </span>
+            {sortedProducts.map((p) => {
+              // Get the first storage option and its pricing
+              const firstStorage = p.storage[0];
+              const pricing = p.pricing[firstStorage as keyof typeof p.pricing];
+              
+              return (
+                <div
+                  key={p.id}
+                  onClick={() => navigate(`/products/${p.id}`)}
+                  className="bg-white rounded-lg shadow-sm hover:shadow-lg transition cursor-pointer relative overflow-hidden"
+                >
+                
 
-                <div className="h-100 ">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="h-70 object-cover"
-                  />
-                </div>
+                  <div className="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={p.images[0]}
+                      alt={p.name}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
 
-                <div className="p-6 text-center space-y-2">
-                  <h3 className="font-bold text-lg">{p.name}</h3>
-                  <p className="text-sm text-gray-500">Starting from</p>
-                  <p className="text-xl font-semibold">{p.weekly}</p>
-                  <p className="text-sm text-gray-500">
-                    + {p.deposit}
-                  </p>
-                  <p className="text-xs italic text-gray-400">
-                    Including 1 week credit
-                  </p>
+                  <div className="p-6 text-center space-y-2">
+                    <h3 className="font-bold text-lg">{p.name}</h3>
+                    <p className="text-sm text-gray-500">{p.condition} • {firstStorage}</p>
+                    <p className="text-sm text-gray-500">Starting from</p>
+                    {pricing && (
+                      <>
+                        <p className="text-xl font-semibold text-blue-600">
+                          Ksh {pricing.weekly.toLocaleString()} / Week
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          + Ksh {pricing.deposit.toLocaleString()} deposit
+                        </p>
+                      </>
+                    )}
+                    <p className="text-xs italic text-gray-400">
+                      Including 1 week credit
+                    </p>
+                    
+                    {/* Rating */}
+                    <div className="flex items-center justify-center gap-2 pt-2">
+                      <div className="flex text-yellow-400 text-sm">
+                        {'★'.repeat(Math.floor(p.rating))}
+                        {p.rating % 1 !== 0 && '☆'}
+                      </div>
+                      
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {sortedProducts.length === 0 && (
-            <div className="text-center py-20 text-gray-500">
-              No products found
+            <div className="text-center py-20">
+              <p className="text-gray-500 text-lg">No products found</p>
+              <button 
+                onClick={() => {
+                  setSelectedBrands([]);
+                  setSelectedStorage([]);
+                  setSelectedDeposit([]);
+                }}
+                className="mt-4 text-blue-600 hover:underline"
+              >
+                Clear all filters
+              </button>
             </div>
           )}
         </main>
@@ -273,4 +278,5 @@ const ProductsPage = () => {
     </div>
   );
 }
+
 export default ProductsPage;
