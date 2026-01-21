@@ -8,7 +8,7 @@ const heroSlides = [
     image: "/image1.jpeg",
     title: "Lipa Mdogo Mdogo Online",
     description:
-      "Call or WhatsApp 0726-770-758 for friendly, fast support. We're available from 8AM to 8PM, Monday to Saturday.",
+      "Call or WhatsApp0745-507-108 for friendly, fast support. We're available from 8AM to 8PM, Monday to Saturday.",
   },
   {
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
@@ -365,7 +365,7 @@ const HomePage = () => {
               <p className="text-gray-700 text-base md:text-lg mb-6 md:mb-8 leading-relaxed font-montserrat">
                 Call or WhatsApp{" "}
                 <span className="font-bold text-blue-600 text-lg md:text-xl">
-                  0726-770-758
+                 0745-507-108
                 </span>
                 <br className="hidden sm:block" />
                 <span className="text-sm md:text-base text-gray-500">
