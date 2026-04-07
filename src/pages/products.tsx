@@ -9,10 +9,10 @@ import { products } from "../data/products";
    EXTRACT UNIQUE FILTER OPTIONS FROM PRODUCTS DATA
 ===================== */
 const brands = [...new Set(products.map(p => p.brand))];
-const storageOptions = [...new Set(products.flatMap(p => p.storage))];
+const storageOptions = [...new Set(products.flatMap(p => p.storage || []))];
 const depositRanges = [...new Set(
   products.flatMap(p => 
-    Object.values(p.pricing).map(price => price.depositRange)
+    Object.values(p.pricing || {}).map(price => price.depositRange)
   )
 )];
 
@@ -73,14 +73,14 @@ const ProductsPage = () => {
     // Filter by storage (check if product has any of the selected storage options)
     if (selectedStorage.length) {
       filtered = filtered.filter((p) =>
-        p.storage.some(s => selectedStorage.includes(s))
+        (p.storage || []).some(s => selectedStorage.includes(s))
       );
     }
 
     // Filter by deposit range (check if any pricing tier matches)
     if (selectedDeposit.length) {
       filtered = filtered.filter((p) =>
-        Object.values(p.pricing).some(price => 
+        Object.values(p.pricing || {}).some(price => 
           selectedDeposit.includes(price.depositRange)
         )
       );
@@ -97,16 +97,16 @@ const ProductsPage = () => {
 
     if (sortBy === "price-low") {
       list.sort((a, b) => {
-        const aPrice = Object.values(a.pricing)[0].weekly;
-        const bPrice = Object.values(b.pricing)[0].weekly;
+        const aPrice = Object.values(a.pricing || {})[0]?.weekly || 0;
+        const bPrice = Object.values(b.pricing || {})[0]?.weekly || 0;
         return aPrice - bPrice;
       });
     }
 
     if (sortBy === "price-high") {
       list.sort((a, b) => {
-        const aPrice = Object.values(a.pricing)[0].weekly;
-        const bPrice = Object.values(b.pricing)[0].weekly;
+        const aPrice = Object.values(a.pricing || {})[0]?.weekly || 0;
+        const bPrice = Object.values(b.pricing || {})[0]?.weekly || 0;
         return bPrice - aPrice;
       });
     }
@@ -206,8 +206,8 @@ const ProductsPage = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedProducts.map((p) => {
               // Get the first storage option and its pricing
-              const firstStorage = p.storage[0];
-              const pricing = p.pricing[firstStorage as keyof typeof p.pricing];
+              const firstStorage = p.storage?.[0] || "";
+              const pricing = p.pricing?.[firstStorage as keyof typeof p.pricing];
               
               return (
                 <div
@@ -219,7 +219,7 @@ const ProductsPage = () => {
 
                   <div className="h-64 bg-gray-100 flex items-center justify-center overflow-hidden">
                     <img
-                      src={p.images[0]}
+                      src={p.images?.[0] || ""}
                       alt={p.name}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -246,8 +246,8 @@ const ProductsPage = () => {
                     {/* Rating */}
                     <div className="flex items-center justify-center gap-2 pt-2">
                       <div className="flex text-yellow-400 text-sm">
-                        {'★'.repeat(Math.floor(p.rating))}
-                        {p.rating % 1 !== 0 && '☆'}
+                        {'★'.repeat(Math.floor(p.rating || 0))}
+                        {(p.rating || 0) % 1 !== 0 && '☆'}
                       </div>
                       
                     </div>

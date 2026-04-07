@@ -38,17 +38,16 @@ export default function ProductDetailsPage() {
   const product = products.find(p => p.id === id);
   
   const [storage, setStorage] = useState("");
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || '');
 const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [mainImage, setMainImage] = useState("");
+  const [mainImage, setMainImage] = useState(product?.images?.[0] || '');
 
   // Initialize storage, color, and main image when product loads
   useEffect(() => {
     if (product) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setStorage(product.storage[0]);
-      setSelectedColor(product.colors[0]);
-      setMainImage(product.images[0]);
+      setStorage(product.storage?.[0] || "");
+      setSelectedColor(product.colors?.[0] || "");
+      setMainImage(product.images?.[0] || "");
     }
   }, [product]);
 
@@ -119,11 +118,11 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
               <div className="flex items-center gap-3 mt-4">
                 <div className="flex text-yellow-400">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <FaStar key={i} className={i < Math.floor(product.rating) ? "" : "opacity-30"} />
+                    <FaStar key={i} className={i < Math.floor(product?.rating || 0) ? "" : "opacity-30"} />
                   ))}
                 </div>
                 <span className="text-sm text-gray-600">
-                  {product.rating} ({product.reviewCount} reviews)
+                  {product?.rating || 0} ({product?.reviewCount || 0} reviews)
                 </span>
               </div>
             </div>
@@ -142,22 +141,22 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Weekly Payment (6 months)</span>
                 <span className="bg-orange-100 text-orange-700 font-bold px-4 py-2 rounded-lg text-lg">
-                  Ksh {currentPricing?.weekly.toLocaleString()}
+                  Ksh {currentPricing?.weekly?.toLocaleString() || 0}
                 </span>
               </div>
 
               <div className="pt-4 border-t border-blue-200">
                 <div className="flex justify-between text-sm text-gray-600">
                   <span>Total Price</span>
-                  <span className="font-semibold">Ksh {currentPricing?.totalPrice.toLocaleString()}</span>
+                  <span className="font-semibold">Ksh {currentPricing?.totalPrice?.toLocaleString() || 0}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-500 mt-1">
                   <span>Retail Price</span>
-                  <span className="line-through">Ksh {currentPricing?.retailPrice.toLocaleString()}</span>
+                  <span className="line-through">Ksh {currentPricing?.retailPrice?.toLocaleString() || 0}</span>
                 </div>
                 <div className="flex justify-between text-sm text-green-600 font-semibold mt-1">
                   <span>You Save</span>
-                  <span>Ksh {currentPricing?.savings.toLocaleString()}</span>
+                   <span>Ksh {currentPricing?.savings?.toLocaleString() || 0}</span>
                 </div>
               </div>
             </div>
@@ -190,7 +189,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
             <div className="space-y-3">
               <p className="font-semibold text-gray-900">Color: {selectedColor}</p>
               <div className="flex flex-wrap gap-3">
-                {product.colors.map(color => (
+                {product?.colors?.map(color => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
@@ -236,7 +235,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
         {/* Promise Section */}
         <div className="grid md:grid-cols-2 gap-12 mt-20 bg-gray-50 p-8 rounded-xl">
           <div>
-            <h2 className="text-2xl font-bold mb-6">The MoPhones Promise</h2>
+            <h2 className="text-2xl font-bold mb-6">The Kenya Phonemart Promise</h2>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-gray-700">
                 <FaCheckCircle className="text-blue-600 text-xl shrink-0" />
@@ -276,7 +275,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
         <section className="mt-20">
           <h2 className="text-2xl font-bold mb-6">Key Features</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {product.features.map((feature, i) => (
+            {product?.features?.map((feature, i) => (
               <div key={i} className="flex items-start gap-3 bg-white border rounded-lg p-4">
                 <FaCheckCircle className="text-green-600 mt-1 shrink-0" />
                 <span className="text-gray-700">{feature}</span>
@@ -289,7 +288,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
         <section className="mt-20">
           <h2 className="text-2xl font-bold mb-6">Technical Specifications</h2>
           <div className="bg-white border rounded-xl overflow-hidden">
-            {Object.entries(product.specs).map(([category, specs]) => (
+            {Object.entries(product?.specs || {}).map(([category, specs]) => (
               <div key={category} className="border-b last:border-b-0">
                 <h3 className="bg-gray-50 px-6 py-3 font-semibold text-gray-900 capitalize">
                   {category.replace(/([A-Z])/g, ' $1').trim()}
@@ -325,7 +324,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
           <h2 className="text-2xl font-bold mb-6">What's in the Box</h2>
           <div className="bg-white border rounded-xl p-6">
             <ul className="space-y-3">
-              {product.inBox.map((item, i) => (
+              {product?.inBox?.map((item, i) => (
                 <li key={i} className="flex items-center gap-3 text-gray-700">
                   <FaBoxOpen className="text-blue-600" />
                   <span>{item}</span>
@@ -351,7 +350,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
               <div className="flex gap-1 text-yellow-400">
                 {Array.from({ length: 5 }).map((_, i) => <FaStar key={i} />)}
               </div>
-              <p className="text-gray-700">"Great condition and the warranty gives me peace of mind. Highly recommend MoPhones!"</p>
+              <p className="text-gray-700">"Great condition and the warranty gives me peace of mind. Highly recommend Kenya Phonemart!"</p>
               <span className="text-sm text-gray-500">– Verified Buyer</span>
             </div>
           </div>
@@ -401,10 +400,10 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
                 <FaShieldAlt className="text-blue-600" />
                 Warranty Coverage
               </h3>
-              <p className="text-gray-600 mb-3">Duration: {product.warranty.duration}</p>
-              <p className="text-gray-600 mb-3">Covers: {product.warranty.coverage}</p>
+              <p className="text-gray-600 mb-3">Duration: {product?.warranty?.duration || '12 months'}</p>
+              <p className="text-gray-600 mb-3">Covers: {product?.warranty?.coverage || 'Hardware defects'}</p>
               <p className="text-sm text-gray-500">
-                Does not cover: {product.warranty.excludes.join(', ')}
+                Does not cover: {product?.warranty?.excludes?.join(', ') || 'Physical damage'}
               </p>
             </div>
             
@@ -413,10 +412,10 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
                 <FaCheckCircle className="text-blue-600" />
                 Return Policy
               </h3>
-              <p className="text-gray-600 mb-3">Return window: {product.returns.period}</p>
-              <p className="text-gray-600 mb-3">Refund: {product.returns.refundMethod}</p>
+              <p className="text-gray-600 mb-3">Return window: {product?.returns?.period || '48 hours'}</p>
+              <p className="text-gray-600 mb-3">Refund: {product?.returns?.refundMethod || 'Full refund'}</p>
               <p className="text-sm text-gray-500">
-                Conditions: {product.returns.conditions.join(', ')}
+                Conditions: {product?.returns?.conditions?.join(', ') || 'No physical damage'}
               </p>
             </div>
           </div>

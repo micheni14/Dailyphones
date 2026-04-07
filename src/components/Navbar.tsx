@@ -123,7 +123,7 @@ const Navbar = () => {
             {/* Logo */}
             <a href="/" className="flex items-center z-50">
               <span className="text-2xl lg:text-3xl font-bold text-blue-900 font-montserrat-alternates">
-                Dailyphoneske
+                Kenya Phonemart
               </span>
             </a>
 
@@ -348,7 +348,7 @@ const Navbar = () => {
           {/* Footer */}
           <div className="p-6 border-t border-gray-100 bg-gray-50">
             <p className="text-xs text-gray-500 text-center font-montserrat">
-              © 2024 Dailyphoneske. All rights reserved.
+              © 2024 Kenya Phonemart. All rights reserved.
             </p>
           </div>
         </div>

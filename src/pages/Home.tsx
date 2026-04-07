@@ -10,12 +10,7 @@ const heroSlides = [
     description:
       "Call or WhatsApp0745-507-108 for friendly, fast support. We're available from 8AM to 8PM, Monday to Saturday.",
   },
-  {
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-    title: "Premium Smartphones",
-    description:
-      "Get authentic Samsung and iPhone devices with flexible weekly payment plans and fast delivery.",
-  },
+
   {
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
     title: "Trusted Phone Store",

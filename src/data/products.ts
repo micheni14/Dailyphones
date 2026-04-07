@@ -18,22 +18,26 @@ export const products = [
         savings: 15000
       },
       "128GB": {
-        deposit: 16199,
-        weekly: 1660,
-        monthly: 7100,
-        depositRange: "Ksh 25k to 30k",
+        deposit: 8999,
+        weekly: 1160,
+        monthly: 5020,
+        depositRange: "Ksh 8k to 10k",
         totalPrice: 45999,
         retailPrice: 62999,
-        savings: 17000
+        savings: 17000,
+        high: { deposit: 12599, weekly: 950 },
+        saver: { deposit: 15999, weekly: 1360 }
       },
       "256GB": {
-        deposit: 18999,
-        weekly: 1890,
-        monthly: 8070,
-        depositRange: "Ksh 30k to 40k",
+        deposit: 10599,
+        weekly: 1380,
+        monthly: 5980,
+        depositRange: "Ksh 10k to 12k",
         totalPrice: 52999,
         retailPrice: 72999,
-        savings: 20000
+        savings: 20000,
+        high: { deposit: 14899, weekly: 1130 },
+        saver: { deposit: 18899, weekly: 1600 }
       }
     },
     discount: "27% Off new",
@@ -41,7 +45,7 @@ export const products = [
     rating: 4.7,
     reviewCount: 1249,
     images: [
-      "/iphone-11-main.png",
+      "https://mophones.co/cdn/shop/products/apple_iphone_11_white_image_0_400x.jpg?v=1674388714",
       "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?w=800",
       "https://images.unsplash.com/photo-1592286927405-1d0d9c78e4aa?w=800",
       "https://images.unsplash.com/photo-1611472173362-3f53dbd65d80?w=800",
@@ -349,22 +353,16 @@ iPhone 11 Pro (Renewed), USB-C to Lightning cable, 18W USB-C power adapter, EarP
     colors: ["Black", "White", "Blue", "Green", "Purple", "Red"],
     pricing: {
       "64GB": {
-        deposit: 19999,
-        weekly: 1940,
-        monthly: 8290,
-        depositRange: "Ksh 30k to 40k",
-        totalPrice: 54999,
-        retailPrice: 74999,
-        savings: 20000
+        deposit: 11899,
+        weekly: 1540,
+        high: { deposit: 16699, weekly: 1260 },
+        saver: { deposit: 21499, weekly: 1810 }
       },
       "128GB": {
-        deposit: 22499,
-        weekly: 2190,
-        monthly: 9350,
-        depositRange: "Ksh 35k to 45k",
-        totalPrice: 62999,
-        retailPrice: 84999,
-        savings: 22000
+        deposit: 11899,
+        weekly: 1540,
+        high: { deposit: 16699, weekly: 1260 },
+        saver: { deposit: 21499, weekly: 1810 }
       },
       "256GB": {
         deposit: 25999,
@@ -1487,4 +1485,390 @@ Galaxy S23 FE (Renewed), USB-C cable, SIM ejector tool, quick start guide.`,
     category: "Smartphones",
     subcategory: "Samsung"
   },
-]
+  {
+    id: "iphone-11-easter",
+    name: "Apple iPhone 11 (EASTER)",
+    brand: "Apple iPhone",
+    model: "iPhone 11",
+    year: 2019,
+    storage: ["128GB"],
+    colors: ["Black", "White", "Purple", "Yellow", "Green", "Red"],
+    pricing: {
+      "128GB": {
+        deposit: 8699,
+        weekly: 1130,
+        monthly: 4890,
+        depositRange: "Ksh 8k to 10k",
+        totalPrice: 42999,
+        retailPrice: 59999,
+        savings: 17000,
+        high: { deposit: 12199, weekly: 930 },
+        saver: { deposit: 15699, weekly: 1330 }
+      }
+    },
+    discount: "28% Off new",
+    condition: "Excellent",
+    rating: 4.7,
+    reviewCount: 1249,
+    images: ["https://mophones.co/cdn/shop/products/apple_iphone_11_white_image_0_400x.jpg?v=1674388714"],
+    description: "Easter Special Deal!",
+    shortDescription: "Easter Special: Powerful dual-camera system at an unbeatable price.",
+    features: ["6.1-inch Liquid Retina HD display", "A13 Bionic chip"],
+    specs: { display: { size: "6.1 inches" } },
+    category: "Smartphones",
+    subcategory: "Apple"
+  },
+  {
+    id: "iphone-12-mini",
+    name: "Apple iPhone 12 Mini",
+    brand: "Apple iPhone",
+    model: "iPhone 12 Mini",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 9899,
+        weekly: 1280,
+        monthly: 5540,
+        depositRange: "Ksh 9k to 11k",
+        high: { deposit: 13899, weekly: 1050 },
+        saver: { deposit: 17799, weekly: 1510 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Apple",
+    images: ["https://images.unsplash.com/photo-1605236453806-6ff36851218e?w=800"]
+  },
+  {
+    id: "iphone-13-pro-max",
+    name: "Apple iPhone 13 Pro Max",
+    brand: "Apple iPhone",
+    model: "iPhone 13 Pro Max",
+    year: 2021,
+    storage: ["256GB", "512GB", "1TB"],
+    pricing: {
+      "256GB": {
+        deposit: 26199,
+        weekly: 2130,
+        saver: { deposit: 33699, weekly: 2850 }
+      },
+      "512GB": {
+        deposit: 29499,
+        weekly: 2390,
+        saver: { deposit: 37899, weekly: 3200 }
+      },
+      "1TB": {
+        deposit: 29499,
+        weekly: 2390,
+        saver: { deposit: 37899, weekly: 3200 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Apple",
+    images: ["https://mophones.co/cdn/shop/products/apple_iphone_13_pro_max_gold_image_0_400x.jpg?v=1674389404"]
+  },
+  {
+    id: "iphone-14-pro-max",
+    name: "Apple iPhone 14 Pro Max",
+    brand: "Apple iPhone",
+    model: "iPhone 14 Pro Max",
+    year: 2022,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 31499,
+        weekly: 2560,
+        saver: { deposit: 40499, weekly: 3420 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Apple",
+    images: ["https://images.unsplash.com/photo-1663499482523-1c0d8c610537?w=800"]
+  },
+  {
+    id: "iphone-15-pro-max",
+    name: "Apple iPhone 15 Pro Max",
+    brand: "Apple iPhone",
+    model: "iPhone 15 Pro Max",
+    year: 2023,
+    storage: ["256GB"],
+    pricing: {
+      "256GB": {
+        deposit: 40299,
+        weekly: 3270,
+        saver: { deposit: 51699, weekly: 4370 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Apple",
+    images: ["https://images.unsplash.com/photo-1695048133551-f9cc40c87eb6?w=800"]
+  },
+  {
+    id: "galaxy-a42",
+    name: "Samsung Galaxy A42",
+    brand: "Samsung",
+    model: "Galaxy A42",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 5999,
+        weekly: 770,
+        high: { deposit: 8399, weekly: 630 },
+        saver: { deposit: 10799, weekly: 910 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "galaxy-s20-plus",
+    name: "Samsung Galaxy S20 Plus",
+    brand: "Samsung",
+    model: "Galaxy S20 Plus",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 7499,
+        weekly: 970,
+        high: { deposit: 10499, weekly: 790 },
+        saver: { deposit: 13499, weekly: 1140 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=800"]
+  },
+  {
+    id: "galaxy-note-20",
+    name: "Samsung Galaxy Note 20",
+    brand: "Samsung",
+    model: "Galaxy Note 20",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 7999,
+        weekly: 1040,
+        high: { deposit: 11199, weekly: 850 },
+        saver: { deposit: 14399, weekly: 1220 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://mophones.co/cdn/shop/files/NOte20Black_23da7f6b-cc29-41a0-9eac-63d0385cc238_400x.jpg?v=1718362656"]
+  },
+  {
+    id: "galaxy-s21-plus",
+    name: "Samsung Galaxy S21 Plus",
+    brand: "Samsung",
+    model: "Galaxy S21 Plus",
+    year: 2021,
+    storage: ["128GB", "256GB"],
+    pricing: {
+      "128GB": {
+        deposit: 8499,
+        weekly: 1110,
+        high: { deposit: 11999, weekly: 900 },
+        saver: { deposit: 15399, weekly: 1300 }
+      },
+      "256GB": {
+        deposit: 10199,
+        weekly: 1320,
+        high: { deposit: 14299, weekly: 1080 },
+        saver: { deposit: 18399, weekly: 1550 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "galaxy-s20-ultra",
+    name: "Samsung Galaxy S20 Ultra",
+    brand: "Samsung",
+    model: "Galaxy S20 Ultra",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 8999,
+        weekly: 1160,
+        high: { deposit: 12599, weekly: 950 },
+        saver: { deposit: 16199, weekly: 1370 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://mophones.co/cdn/shop/files/S20Ultra1_400x.jpg?v=1718780519"]
+  },
+  {
+    id: "galaxy-s20-ultra-easter",
+    name: "Samsung Galaxy S20 Ultra (EASTER)",
+    brand: "Samsung",
+    model: "Galaxy S20 Ultra",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 8499,
+        weekly: 1100,
+        high: { deposit: 11899, weekly: 900 },
+        saver: { deposit: 15299, weekly: 1300 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1585060544812-6b45742d762f?w=800"]
+  },
+  {
+    id: "galaxy-s21-ultra",
+    name: "Samsung Galaxy S21 Ultra",
+    brand: "Samsung",
+    model: "Galaxy S21 Ultra",
+    year: 2021,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 10999,
+        weekly: 1420,
+        high: { deposit: 15399, weekly: 1160 },
+        saver: { deposit: 19799, weekly: 1670 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "galaxy-note-20-ultra",
+    name: "Samsung Galaxy Note 20 Ultra",
+    brand: "Samsung",
+    model: "Galaxy Note 20 Ultra",
+    year: 2020,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 12499,
+        weekly: 1620,
+        high: { deposit: 17499, weekly: 1320 },
+        saver: { deposit: 22499, weekly: 1900 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "galaxy-s22-ultra",
+    name: "Samsung Galaxy S22 Ultra",
+    brand: "Samsung",
+    model: "Galaxy S22 Ultra",
+    year: 2022,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 22699,
+        weekly: 1850,
+        saver: { deposit: 29199, weekly: 2470 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "galaxy-s23-ultra",
+    name: "Samsung Galaxy S23 Ultra",
+    brand: "Samsung",
+    model: "Galaxy S23 Ultra",
+    year: 2023,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 26199,
+        weekly: 2130,
+        saver: { deposit: 33699, weekly: 2850 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800"]
+  },
+  {
+    id: "galaxy-s24-ultra",
+    name: "Samsung Galaxy S24 Ultra",
+    brand: "Samsung",
+    model: "Galaxy S24 Ultra",
+    year: 2024,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 33199,
+        weekly: 2700,
+        saver: { deposit: 42699, weekly: 3610 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "galaxy-s25-ultra",
+    name: "Samsung Galaxy S25 Ultra",
+    brand: "Samsung",
+    model: "Galaxy S25 Ultra",
+    year: 2025,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 40199,
+        weekly: 3270,
+        saver: { deposit: 51699, weekly: 4370 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Samsung",
+    images: ["https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=800"]
+  },
+  {
+    id: "motorola-g-power",
+    name: "Motorola G Power",
+    brand: "Motorola",
+    model: "G Power",
+    year: 2021,
+    storage: ["64GB"],
+    pricing: {
+      "64GB": {
+        deposit: 5499,
+        weekly: 710,
+        high: { deposit: 7699, weekly: 580 },
+        saver: { deposit: 9899, weekly: 840 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Motorola",
+    images: ["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800"]
+  },
+  {
+    id: "motorola-g-stylus",
+    name: "Motorola G Stylus",
+    brand: "Motorola",
+    model: "G Stylus",
+    year: 2021,
+    storage: ["128GB"],
+    pricing: {
+      "128GB": {
+        deposit: 6999,
+        weekly: 910,
+        high: { deposit: 9799, weekly: 740 },
+        saver: { deposit: 12599, weekly: 1060 }
+      }
+    },
+    category: "Smartphones",
+    subcategory: "Motorola",
+    images: ["https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800"]
+  }
+]

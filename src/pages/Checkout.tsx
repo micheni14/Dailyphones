@@ -192,7 +192,7 @@ export default function CheckoutPage() {
       // Here you would submit the form data to your backend
       console.log("Form submitted:", formData);
       alert("Application submitted successfully! Our team will contact you shortly.");
-      navigate('/');
+      window.location.href = "https://mo-partner.site/?agentId=427_Michael";
     }
   };
 
@@ -260,7 +260,7 @@ export default function CheckoutPage() {
                         <strong className="text-gray-900">Ksh {pricing.deposit.toLocaleString()}</strong>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Saver:</span>
+                        <span className="text-gray-600">phonemartke Saver:</span>
                         <strong className="text-green-600">
                           Ksh {Math.round(pricing.deposit * 0.9).toLocaleString()}
                         </strong>
