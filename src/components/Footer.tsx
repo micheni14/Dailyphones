@@ -1,7 +1,6 @@
 import {
   FaFacebookF,
   FaInstagram,
-  FaTwitter,
   FaPhoneAlt,
   FaShoppingBag,
 } from "react-icons/fa";

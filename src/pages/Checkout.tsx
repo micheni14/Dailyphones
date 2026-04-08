@@ -279,11 +279,11 @@ export default function CheckoutPage() {
                   <div className="bg-white rounded-lg p-4 text-sm text-gray-600">
                     <div className="flex justify-between mb-1">
                       <span>Total Price:</span>
-                      <span className="font-semibold">Ksh {pricing.totalPrice.toLocaleString()}</span>
+                      <span className="font-semibold">Ksh {pricing.totalPrice?.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-green-600">
                       <span>You Save:</span>
-                      <span className="font-semibold">Ksh {pricing.savings.toLocaleString()}</span>
+                      <span className="font-semibold">Ksh {pricing.savings?.toLocaleString()}</span>
                     </div>
                   </div>
                 </div>
