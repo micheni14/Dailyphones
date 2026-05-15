@@ -12,7 +12,7 @@ const brands = [...new Set(products.map(p => p.brand))];
 const storageOptions = [...new Set(products.flatMap(p => p.storage || []))];
 const depositRanges = [...new Set(
   products.flatMap(p => 
-    Object.values(p.pricing || {}).map(price => price.depositRange)
+    Object.values(p.pricing || {}).map((price: any) => price.depositRange)
   )
 )];
 
@@ -82,14 +82,14 @@ const ProductsPage = () => {
     // Filter by storage
     if (selectedStorage.length) {
       filtered = filtered.filter((p) =>
-        (p.storage || []).some(s => selectedStorage.includes(s))
+        (p.storage || []).some((s: any) => selectedStorage.includes(s))
       );
     }
 
     // Filter by deposit range
     if (selectedDeposit.length) {
       filtered = filtered.filter((p) =>
-        Object.values(p.pricing || {}).some(price => 
+        Object.values(p.pricing || {}).some((price: any) => 
           selectedDeposit.includes(price.depositRange)
         )
       );
@@ -106,16 +106,16 @@ const ProductsPage = () => {
 
     if (sortBy === "price-low") {
       list.sort((a, b) => {
-        const aPrice = Object.values(a.pricing || {})[0]?.weekly || 0;
-        const bPrice = Object.values(b.pricing || {})[0]?.weekly || 0;
+        const aPrice = (Object.values(a.pricing || {})[0] as any)?.weekly || 0;
+        const bPrice = (Object.values(b.pricing || {})[0] as any)?.weekly || 0;
         return aPrice - bPrice;
       });
     }
 
     if (sortBy === "price-high") {
       list.sort((a, b) => {
-        const aPrice = Object.values(a.pricing || {})[0]?.weekly || 0;
-        const bPrice = Object.values(b.pricing || {})[0]?.weekly || 0;
+        const aPrice = (Object.values(a.pricing || {})[0] as any)?.weekly || 0;
+        const bPrice = (Object.values(b.pricing || {})[0] as any)?.weekly || 0;
         return bPrice - aPrice;
       });
     }
