@@ -23,12 +23,7 @@ const Footer = () => {
               Your one-stop shop for <span className="text-white font-semibold">lipa mdogo mdogo</span> gadgets 
               from top brands in Kenya such as Samsung and Iphone.
             </p>
-            <div className="pt-4">
-              <p className="text-sm text-gray-400">
-                Deposits range from as low as <span className="text-white font-bold">Ksh 1,000</span>, 
-                and easy daily installments starting from <span className="text-white font-bold">Ksh 50</span>.
-              </p>
-            </div>
+           
           </div>
 
           {/* CONTACT & SOCIAL MEDIA */}

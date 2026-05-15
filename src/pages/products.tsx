@@ -61,7 +61,16 @@ const ProductsPage = () => {
      FILTER LOGIC
   ===================== */
   const filteredProducts = useMemo(() => {
-    let filtered = [...products];
+    const seenModels = new Set();
+    let filtered = products.filter(p => {
+      const hasImage = p.images && p.images.length > 0 && p.images[0] !== "";
+      const isNewModel = !seenModels.has(p.model);
+      if (hasImage && isNewModel) {
+        seenModels.add(p.model);
+        return true;
+      }
+      return false;
+    });
 
     // Filter by brand
     if (selectedBrands.length) {
@@ -70,14 +79,14 @@ const ProductsPage = () => {
       );
     }
 
-    // Filter by storage (check if product has any of the selected storage options)
+    // Filter by storage
     if (selectedStorage.length) {
       filtered = filtered.filter((p) =>
         (p.storage || []).some(s => selectedStorage.includes(s))
       );
     }
 
-    // Filter by deposit range (check if any pricing tier matches)
+    // Filter by deposit range
     if (selectedDeposit.length) {
       filtered = filtered.filter((p) =>
         Object.values(p.pricing || {}).some(price => 

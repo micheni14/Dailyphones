@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
+import { products } from "../data/products";
 
 const heroSlides = [
   {
@@ -30,86 +31,34 @@ const brands = [
     logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg",
     description: "iPhone 13, 14 & 15 series"
   },
+  {
+    name: "Motorola",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/3/32/Motorola_logo.svg",
+    description: "G Power & Stylus series"
+  }
 ];
 
-const samsungDeals = [
-  {
-    id: 1,
-    discount: "-15%",
-    name: "Samsung Galaxy A15",
-    specs: "128GB/6GB • 50MP",
-    price: "Ksh 499/week",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
-  },
-  {
-    id: 2,
-    discount: "-12%",
-    name: "Samsung Galaxy A25",
-    specs: "256GB/8GB • 50MP",
-    price: "Ksh 699/week",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
-  },
-  {
-    id: 3,
-    discount: "-10%",
-    name: "Samsung Galaxy A55",
-    specs: "256GB/8GB • 50MP",
-    price: "Ksh 999/week",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
-  },
-  {
-    id: 4,
-    discount: "-18%",
-    name: "Samsung Galaxy S23",
-    specs: "256GB/8GB • 50MP",
-    price: "Ksh 1,499/week",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
-  },
-  {
-    id: 5,
-    discount: "-15%",
-    name: "Samsung Galaxy S24",
-    specs: "256GB/8GB • 50MP",
-    price: "Ksh 1,799/week",
-    image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400",
-  },
-];
-
-const iphoneDeals = [
-  {
-    name: "iPhone 13",
-    specs: "128GB • 6.1\"",
-    price: "Ksh 1,299/week",
-    image: "https://images.unsplash.com/photo-1632661674596-df8be070a5c5?w=400",
-  },
-  {
-    name: "iPhone 14",
-    specs: "128GB • 6.1\"",
-    price: "Ksh 1,799/week",
-    image: "https://images.unsplash.com/photo-1678652197950-14c3a9b6f2d7?w=400",
-  },
-  {
-    name: "iPhone 14 Plus",
-    specs: "128GB • 6.7\"",
-    price: "Ksh 1,999/week",
-    image: "https://images.unsplash.com/photo-1678652197950-14c3a9b6f2d7?w=400",
-  },
-  {
-    name: "iPhone 15",
-    specs: "128GB • 6.1\"",
-    price: "Ksh 2,199/week",
-    image: "https://images.unsplash.com/photo-1695048133551-f9cc40c87eb6?w=400",
-  },
-  {
-    name: "iPhone 15 Pro",
-    specs: "256GB • 6.1\"",
-    price: "Ksh 2,799/week",
-    image: "https://images.unsplash.com/photo-1695048133551-f9cc40c87eb6?w=400",
-  },
-];
 
 const HomePage = () => {
   const [current, setCurrent] = useState(0);
+  const [filterBrand, setFilterBrand] = useState<string | null>(null);
+
+  const displayedProducts = useMemo(() => {
+    const seenModels = new Set();
+    const filtered = products.filter(p => {
+      const hasImage = p.images && p.images.length > 0 && p.images[0] !== "";
+      const isNewModel = !seenModels.has(p.model);
+      if (hasImage && isNewModel) {
+        seenModels.add(p.model);
+        return true;
+      }
+      return false;
+    });
+
+    return filterBrand 
+      ? filtered.filter(p => p.brand === filterBrand)
+      : filtered.slice(0, 10);
+  }, [filterBrand]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -184,11 +133,14 @@ const HomePage = () => {
             Premium Brands We Offer
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
             {brands.map((brand) => (
               <div
                 key={brand.name}
-                className="group relative bg-linear-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-8 md:p-12 hover:border-blue-500 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                onClick={() => setFilterBrand(brand.name)}
+                className={`group relative bg-linear-to-br from-gray-50 to-white border-2 rounded-2xl p-8 md:p-12 hover:border-blue-500 hover:shadow-xl transition-all duration-300 cursor-pointer ${
+                  filterBrand === brand.name ? "border-blue-600 shadow-md" : "border-gray-200"
+                }`}
               >
                 <div className="flex flex-col items-center text-center">
                   <div className="h-16 md:h-20 mb-6 flex items-center justify-center">
@@ -205,57 +157,72 @@ const HomePage = () => {
                     {brand.description}
                   </p>
                 </div>
-                <div className="absolute inset-0 bg-blue-500 opacity-0 group-hover:opacity-5 rounded-2xl transition-opacity duration-300"></div>
               </div>
             ))}
           </div>
+          {filterBrand && (
+            <div className="text-center mt-8">
+              <button 
+                onClick={() => setFilterBrand(null)}
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Clear Filter
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* SAMSUNG DEALS */}
+      {/* RECENT STOCK SECTION */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8 md:mb-12">
             <h2 className="text-2xl md:text-3xl font-bold font-montserrat text-gray-900">
-              Samsung Galaxy Deals
+              {filterBrand ? `${filterBrand} Stock` : "Recent Stock"}
             </h2>
-            <button className="text-blue-900 hover:text-blue-700 font-semibold text-sm md:text-base font-montserrat hidden sm:block">
+            <Link to="/products" className="text-blue-900 hover:text-blue-700 font-semibold text-sm md:text-base font-montserrat hidden sm:block">
               View All →
-            </button>
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-            {samsungDeals.map((deal) => (
-              <div
-                key={deal.id}
-                className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200"
-              >
-                <div className="relative overflow-hidden bg-gray-100">
-                  <img
-                    src={deal.image}
-                    alt={deal.name}
-                    className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-lg text-xs md:text-sm font-bold">
-                    {deal.discount}
+            {displayedProducts.map((p) => {
+              const pricing = Object.values(p.pricing)[0] as any;
+              return (
+                <Link
+                  to={`/products/${p.id}`}
+                  key={p.id}
+                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-200"
+                >
+                  <div className="relative overflow-hidden bg-gray-100">
+                    <img
+                      src={p.images?.[0] || ""}
+                      alt={p.name}
+                      className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    {p.condition === "Excellent" && (
+                      <div className="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded-lg text-xs md:text-sm font-bold">
+                        New Stock
+                      </div>
+                    )}
                   </div>
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="font-bold text-sm md:text-base text-gray-900 mb-1 font-montserrat line-clamp-1">
-                    {deal.name}
-                  </h3>
-                  <p className="text-xs md:text-sm text-gray-600 mb-2 font-montserrat line-clamp-1">
-                    {deal.specs}
-                  </p>
-                  <p className="text-blue-900 font-bold text-sm md:text-lg font-montserrat">
-                    {deal.price}
-                  </p>
-                  <button className="w-full mt-3 bg-blue-900 text-white py-2 rounded-lg font-semibold text-xs md:text-sm hover:bg-blue-800 transition-colors font-montserrat">
-                    Order Now
-                  </button>
-                </div>
-              </div>
-            ))}
+                  <div className="p-3 md:p-4">
+                    <h3 className="font-bold text-sm md:text-base text-gray-900 mb-1 font-montserrat line-clamp-1">
+                      {p.name}
+                    </h3>
+                    <p className="text-xs md:text-sm text-gray-600 mb-2 font-montserrat line-clamp-1">
+                      {p.storage[0]} • {p.condition}
+                    </p>
+                    <p className="text-blue-900 font-bold text-sm md:text-lg font-montserrat">
+                      Ksh {pricing.weekly.toLocaleString()}/week
+                    </p>
+                    <button className="w-full mt-3 bg-blue-900 text-white py-2 rounded-lg font-semibold text-xs md:text-sm hover:bg-blue-800 transition-colors font-montserrat">
+                      Order Now
+                    </button>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -382,53 +349,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* IPHONE DEALS */}
-      <section className="py-12 md:py-16 bg-linear-to-b from-gray-900 to-black text-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8 md:mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold font-montserrat">
-              iPhone Premium Collection
-            </h2>
-            <Link 
-  to="/products" 
-  className="text-blue-400 hover:text-blue-300 font-semibold text-sm md:text-base font-montserrat hidden sm:block"
->
-  View All →
-</Link>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-            {iphoneDeals.map((deal, index) => (
-              <div
-                key={index}
-                className="group bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-700 hover:border-blue-500"
-              >
-                <div className="relative overflow-hidden bg-gray-700">
-                  <img
-                    src={deal.image}
-                    alt={deal.name}
-                    className="w-full h-48 md:h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-3 md:p-4">
-                  <h3 className="font-bold text-sm md:text-base text-white mb-1 font-montserrat line-clamp-1">
-                    {deal.name}
-                  </h3>
-                  <p className="text-xs md:text-sm text-gray-400 mb-2 font-montserrat line-clamp-1">
-                    {deal.specs}
-                  </p>
-                  <p className="text-blue-400 font-bold text-sm md:text-lg font-montserrat">
-                    {deal.price}
-                  </p>
-                  <button className="w-full mt-3 bg-blue-600 text-white py-2 rounded-lg font-semibold text-xs md:text-sm hover:bg-blue-500 transition-colors font-montserrat">
-                    Order Now
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
       <Footer />
       </div>
       </>

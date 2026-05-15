@@ -39,8 +39,9 @@ export default function ProductDetailsPage() {
   
   const [storage, setStorage] = useState("");
   const [selectedColor, setSelectedColor] = useState(product?.colors?.[0] || '');
-const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [mainImage, setMainImage] = useState(product?.images?.[0] || '');
+  const [selectedPlan, setSelectedPlan] = useState<"standard" | "high" | "saver">("standard");
 
   // Initialize storage, color, and main image when product loads
   useEffect(() => {
@@ -48,6 +49,7 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
       setStorage(product.storage?.[0] || "");
       setSelectedColor(product.colors?.[0] || "");
       setMainImage(product.images?.[0] || "");
+      setSelectedPlan("standard");
     }
   }, [product]);
 
@@ -63,7 +65,13 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
     );
   }
 
-  const currentPricing = product.pricing[storage as keyof typeof product.pricing];
+  const currentPricing = (() => {
+    const base = product.pricing[storage as keyof typeof product.pricing];
+    if (!base) return null;
+    if (selectedPlan === "high" && "high" in base) return { ...base, ...(base as any).high };
+    if (selectedPlan === "saver" && "saver" in base) return { ...base, ...(base as any).saver };
+    return base;
+  })();
 
   return (
     <>
@@ -127,9 +135,32 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
               </div>
             </div>
 
+            {/* Plan Selection Buttons */}
+            <div className="flex gap-2">
+              {[
+                { id: 'standard', label: 'Standard', exists: true },
+                { id: 'high', label: 'High Deposit', exists: !!product.pricing[storage as keyof typeof product.pricing]?.high },
+                { id: 'saver', label: 'MoSaver', exists: !!product.pricing[storage as keyof typeof product.pricing]?.saver }
+              ].filter(p => p.exists).map(plan => (
+                <button
+                  key={plan.id}
+                  onClick={() => setSelectedPlan(plan.id as any)}
+                  className={`flex-1 py-2 px-3 rounded-lg text-sm font-semibold transition ${
+                    selectedPlan === plan.id
+                      ? "bg-blue-600 text-white shadow-md"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  {plan.label}
+                </button>
+              ))}
+            </div>
+
             {/* Pricing Card */}
             <div className="border-2 border-blue-600 rounded-xl p-6 space-y-4 bg-blue-50">
-              <h2 className="text-xl font-semibold text-gray-900">Dealer Deal</h2>
+              <h2 className="text-xl font-semibold text-gray-900">
+                {selectedPlan === 'standard' ? 'Dealer Deal' : selectedPlan === 'high' ? 'High Deposit Plan' : 'MoSaver Plan'}
+              </h2>
               
               <div className="flex justify-between items-center">
                 <span className="text-gray-700">Deposit</span>
@@ -172,7 +203,10 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
                 {product.storage.map(s => (
                   <button
                     key={s}
-                    onClick={() => setStorage(s)}
+                    onClick={() => {
+                      setStorage(s);
+                      setSelectedPlan("standard");
+                    }}
                     className={`px-6 py-3 border-2 rounded-lg font-medium transition ${
                       storage === s 
                         ? "border-blue-600 bg-blue-50 text-blue-600" 
@@ -221,7 +255,8 @@ const [openFaq, setOpenFaq] = useState<number | null>(null);
                 state: { 
                   productId: product.id, 
                   storage, 
-                  color: selectedColor 
+                  color: selectedColor,
+                  plan: selectedPlan 
                 } 
               })}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300"

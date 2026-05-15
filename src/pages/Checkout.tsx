@@ -30,6 +30,7 @@ interface LocationState {
   productId: string;
   storage: string;
   color: string;
+  plan: "standard" | "high" | "saver";
 }
 
 export default function CheckoutPage() {
@@ -38,7 +39,7 @@ export default function CheckoutPage() {
   
   // Get product details from navigation state
   const state = location.state as LocationState | undefined;
-  const { productId, storage, color } = state || { productId: '', storage: '', color: '' };
+  const { productId, storage, color, plan } = state || { productId: '', storage: '', color: '', plan: 'standard' };
   
   // Find the product
   const product = products.find(p => p.id === productId);
@@ -96,9 +97,9 @@ export default function CheckoutPage() {
     );
   }
 
-  const pricing = product.pricing[storage as keyof typeof product.pricing];
-
-  if (!pricing) {
+  const basePricing = product.pricing[storage as keyof typeof product.pricing];
+  
+  if (!basePricing) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -114,6 +115,12 @@ export default function CheckoutPage() {
       </div>
     );
   }
+
+  const pricing = (() => {
+    if (plan === "high" && "high" in basePricing) return { ...basePricing, ...(basePricing as any).high };
+    if (plan === "saver" && "saver" in basePricing) return { ...basePricing, ...(basePricing as any).saver };
+    return basePricing;
+  })();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -248,7 +255,7 @@ export default function CheckoutPage() {
                 
                 <h2 className="text-xl font-bold mb-2">{product.name}</h2>
                 <p className="text-gray-600 text-sm mb-4">
-                  {product.condition} / {storage} / {color}
+                  {product.condition} / {storage} / {color} / {plan === 'standard' ? 'Standard' : plan === 'high' ? 'High Deposit' : 'MoSaver'}
                 </p>
 
                 <div className="space-y-4">
@@ -256,14 +263,8 @@ export default function CheckoutPage() {
                     <h3 className="font-bold mb-3 text-gray-900">Deposit (1 week included)</h3>
                     <div className="space-y-2">
                       <div className="flex justify-between">
-                        <span className="text-gray-600">Standard:</span>
+                        <span className="text-gray-600">{plan === 'standard' ? 'Standard' : plan === 'high' ? 'High Deposit' : 'MoSaver'}:</span>
                         <strong className="text-gray-900">Ksh {pricing.deposit.toLocaleString()}</strong>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">phonemartke Saver:</span>
-                        <strong className="text-green-600">
-                          Ksh {Math.round(pricing.deposit * 0.9).toLocaleString()}
-                        </strong>
                       </div>
                     </div>
                   </div>
