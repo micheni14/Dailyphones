@@ -97,7 +97,7 @@ export default function CheckoutPage() {
     );
   }
 
-  const basePricing = product.pricing[storage as keyof typeof product.pricing];
+  const basePricing = product.pricing?.[storage];
   
   if (!basePricing) {
     return (

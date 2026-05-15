@@ -1,4 +1,4 @@
-export const products = [
+export const products: any[] = [
   {
     id: "iphone-11-128gb-easter",
     name: "iPhone 11 128GB (EASTER)",

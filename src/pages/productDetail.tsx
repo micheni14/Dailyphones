@@ -66,11 +66,11 @@ export default function ProductDetailsPage() {
   }
 
   const currentPricing = (() => {
-    const base = product.pricing[storage as keyof typeof product.pricing];
-    if (!base) return null;
-    if (selectedPlan === "high" && "high" in base) return { ...base, ...(base as any).high };
-    if (selectedPlan === "saver" && "saver" in base) return { ...base, ...(base as any).saver };
-    return base;
+    const basePricing = product.pricing?.[storage];
+    if (!basePricing) return null;
+    if (selectedPlan === "high" && "high" in basePricing) return { ...basePricing, ...basePricing.high };
+    if (selectedPlan === "saver" && "saver" in basePricing) return { ...basePricing, ...basePricing.saver };
+    return basePricing;
   })();
 
   return (
@@ -98,7 +98,7 @@ export default function ProductDetailsPage() {
             
             {/* Thumbnail Gallery */}
             <div className="grid grid-cols-4 gap-2">
-              {product.images.map((img, i) => (
+              {product.images.map((img: string, i: number) => (
                 <button
                   key={i}
                   onClick={() => setMainImage(img)}
@@ -139,8 +139,8 @@ export default function ProductDetailsPage() {
             <div className="flex gap-2">
               {[
                 { id: 'standard', label: 'Standard', exists: true },
-                { id: 'high', label: 'High Deposit', exists: !!product.pricing[storage as keyof typeof product.pricing]?.high },
-                { id: 'saver', label: 'MoSaver', exists: !!product.pricing[storage as keyof typeof product.pricing]?.saver }
+                { id: 'high', label: 'High Deposit', exists: !!product.pricing?.[storage]?.high },
+                { id: 'saver', label: 'MoSaver', exists: !!product.pricing?.[storage]?.saver }
               ].filter(p => p.exists).map(plan => (
                 <button
                   key={plan.id}
@@ -200,7 +200,7 @@ export default function ProductDetailsPage() {
             <div className="space-y-3">
               <p className="font-semibold text-gray-900">Storage: {storage}</p>
               <div className="flex flex-wrap gap-3">
-                {product.storage.map(s => (
+                {product.storage.map((s: string) => (
                   <button
                     key={s}
                     onClick={() => {
@@ -223,7 +223,7 @@ export default function ProductDetailsPage() {
             <div className="space-y-3">
               <p className="font-semibold text-gray-900">Color: {selectedColor}</p>
               <div className="flex flex-wrap gap-3">
-                {product?.colors?.map(color => (
+                {product?.colors?.map((color: string) => (
                   <button
                     key={color}
                     onClick={() => setSelectedColor(color)}
@@ -310,7 +310,7 @@ export default function ProductDetailsPage() {
         <section className="mt-20">
           <h2 className="text-2xl font-bold mb-6">Key Features</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {product?.features?.map((feature, i) => (
+            {product?.features?.map((feature: string, i: number) => (
               <div key={i} className="flex items-start gap-3 bg-white border rounded-lg p-4">
                 <FaCheckCircle className="text-green-600 mt-1 shrink-0" />
                 <span className="text-gray-700">{feature}</span>
@@ -329,7 +329,7 @@ export default function ProductDetailsPage() {
                   {category.replace(/([A-Z])/g, ' $1').trim()}
                 </h3>
                 <div className="p-6 space-y-3">
-                  {typeof specs === 'object' ? (
+                  {typeof specs === 'object' && specs !== null ? (
                     Object.entries(specs).map(([key, value]) => (
                       <div key={key} className="flex justify-between py-2 border-b border-gray-100 last:border-b-0">
                         <span className="text-gray-600 capitalize">
@@ -346,7 +346,7 @@ export default function ProductDetailsPage() {
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-700">{specs}</p>
+                    <p className="text-gray-700">{String(specs)}</p>
                   )}
                 </div>
               </div>
@@ -359,7 +359,7 @@ export default function ProductDetailsPage() {
           <h2 className="text-2xl font-bold mb-6">What's in the Box</h2>
           <div className="bg-white border rounded-xl p-6">
             <ul className="space-y-3">
-              {product?.inBox?.map((item, i) => (
+              {product?.inBox?.map((item: string, i: number) => (
                 <li key={i} className="flex items-center gap-3 text-gray-700">
                   <FaBoxOpen className="text-blue-600" />
                   <span>{item}</span>
